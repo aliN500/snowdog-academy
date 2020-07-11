@@ -77,6 +77,9 @@ class Books extends AdminAbstract
 
     private function getBooks(): array
     {
+        
         return $this->bookManager->getAllBooks();
     }
+    
+    
 }
