@@ -80,6 +80,6 @@ class Books extends AdminAbstract
         
         return $this->bookManager->getAllBooks();
     }
-    
+ 
     
 }

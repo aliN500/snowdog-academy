@@ -61,4 +61,5 @@ class BookManager
 
         return $query->fetchAll(Database::FETCH_CLASS, Book::class);
     }
+    
 }
