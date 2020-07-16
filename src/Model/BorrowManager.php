@@ -36,20 +36,24 @@ class BorrowManager
     public function create(int $userId, int $bookId): bool
     {
         try {
-            $this->database->beginTransaction();
+           
+            $this->database->beginTransaction();          
+                $statement = $this->database->prepare('INSERT INTO borrows (user_id, book_id, borrowed_at) VALUES (:user_id, :book_id, NOW())');
+                $statement->bindParam(':user_id', $userId, Database::PARAM_INT);
+                $statement->bindParam(':book_id', $bookId, Database::PARAM_INT);
+                $statement->execute();
+             
+                $statement = $this->database->prepare('UPDATE books SET borrowed = 1 WHERE id = :book_id');
+                $statement->bindParam(':book_id', $bookId, Database::PARAM_INT);
+                $statement->execute();
+               
 
-            $statement = $this->database->prepare('INSERT INTO borrows (user_id, book_id, borrowed_at) VALUES (:user_id, :book_id, NOW())');
-            $statement->bindParam(':user_id', $userId, Database::PARAM_INT);
-            $statement->bindParam(':book_id', $bookId, Database::PARAM_INT);
-            $statement->execute();
+                $this->database->commit();
+    
+                return true;
 
-            $statement = $this->database->prepare('UPDATE books SET borrowed = 1 WHERE id = :book_id');
-            $statement->bindParam(':book_id', $bookId, Database::PARAM_INT);
-            $statement->execute();
-
-            $this->database->commit();
-
-            return true;
+           
+           
         } catch (Exception $e) {
             $this->database->rollBack();
 

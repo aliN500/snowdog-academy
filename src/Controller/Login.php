@@ -32,9 +32,11 @@ class Login
                 $_SESSION['flash'] = 'Hello ' . $user->getLogin() . '!';
 
                 if ($_SESSION['is_admin']) {
+                   
                     header('Location: /admin');
                 } else {
-                    header('Location: /');
+                    // print_r("Hello");die();
+                    header('Location: /books');
                 }
                 return;
             }
